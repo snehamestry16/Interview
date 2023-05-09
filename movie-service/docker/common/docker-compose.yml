@@ -1,0 +1,30 @@
+eurekaserver:
+   image:   starwars/movie-discovery-service:${BUILD_NAME}
+   mem_limit: 1073741824
+   ports:
+       - "8761:8761"
+
+zuulserver:
+    image: starwars/movie-gateway-service:${BUILD_NAME}
+    mem_limit: 1073741824
+    ports:
+      - "8080:8080"
+    links:
+      - "eurekaserver:eurekaserver"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8080"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+
+starwar-service:
+    image: starwars/movie-starwar-service:${BUILD_NAME}
+    mem_limit: 1073741824
+    ports:
+      - "8081:8081"
+    links:
+      - "eurekaserver:eurekaserver"
+      - "zuulserver:zuulserver"
+    environment:
+      PROFILE: "dev"
+      SERVER_PORT: "8081"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
