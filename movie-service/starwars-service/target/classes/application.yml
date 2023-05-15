@@ -1,0 +1,13 @@
+server.port: 8081
+
+spring.application.name: starwars-service  
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+    registryFetchIntervalSeconds: 1
+  instance:
+    leaseRenewalIntervalInSeconds: 1
+
+
